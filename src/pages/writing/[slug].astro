@@ -85,8 +85,8 @@ const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
   <div id="cusdis_thread"
        data-host="https://cusdis.com"
        data-app-id="80731452-35fd-47c2-aa84-b6d29ab930d3"
-       data-page-id={Astro.url.pathname}
-       data-page-url={Astro.url.href}
+       data-page-id={Astro.url.pathname.replace(/\/$/, "")}
+       data-page-url={`https://sahilgupta.me${Astro.url.pathname.replace(/\/$/, "")}`}
        data-page-title={post.data.title}
        data-theme="dark">
   </div>
