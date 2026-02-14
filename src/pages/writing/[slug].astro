@@ -189,6 +189,18 @@ const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
   border: 1px solid rgba(255,255,255,0.06);
 }
 
+#cusdis_thread iframe {
+  width: 100%;
+  min-height: 1100px;
+  height: auto !important;
+}
+
+@media (max-width: 700px) {
+  #cusdis_thread iframe {
+    min-height: 800px;
+  }
+}
+
 /* ---------- Content typography ---------- */
 
 .content {
