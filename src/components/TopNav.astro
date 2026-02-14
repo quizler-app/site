@@ -1,0 +1,29 @@
+<nav class="top-nav">
+  <a href="/writing">Writing</a>
+  <a href="/notes">Notes</a>
+  <a href="/now">Now</a>
+</nav>
+
+<style>
+  .top-nav {
+    position: fixed;
+    top: 24px;
+    right: 32px;
+    z-index: 3;
+    font-size: 0.9rem;
+  }
+
+  .top-nav a {
+    color: var(--muted);
+    text-decoration: none;
+    margin-left: 1.2rem;
+  }
+
+  .top-nav a:hover {
+    color: var(--text);
+  }
+
+  @media (max-width: 700px) {
+    .top-nav { right: 16px; }
+  }
+</style>

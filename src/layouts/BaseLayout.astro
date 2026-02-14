@@ -1,0 +1,78 @@
+---
+const { title = "Sahil Gupta" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+  </head>
+
+  <body>
+
+    <div class="gradient"></div>
+    <div class="noise"></div>
+
+    <slot />
+
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --bg: #0b0b0f;
+    --text: #f5f5f7;
+    --muted: #9ca3af;
+    --orange: #f97316;
+    --pink: #ec4899;
+    --cyan: #22d3ee;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    overflow-x: hidden;
+  }
+
+  .noise {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    z-index: 1;
+  }
+
+  .gradient {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(800px circle at 20% 10%, rgba(236,72,153,0.15), transparent 40%),
+      radial-gradient(600px circle at 80% 30%, rgba(34,211,238,0.12), transparent 45%),
+      radial-gradient(700px circle at 50% 80%, rgba(249,115,22,0.18), transparent 45%);
+    animation: drift 20s ease-in-out infinite alternate;
+  }
+
+  @keyframes drift {
+    from { transform: translateY(0); }
+    to { transform: translateY(-40px); }
+  }
+
+  main {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 100px 32px 120px;
+  }
+
+  @media (max-width: 700px) {
+    main { padding-top: 80px; }
+  }
+</style>

@@ -1,243 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sahil Gupta</title>
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TopNav from "../components/TopNav.astro";
+import Footer from "../components/Footer.astro";
+---
 
-  <style>
-    :root {
-      --bg: #0b0b0f;
-      --text: #f5f5f7;
-      --muted: #9ca3af;
-      --orange: #f97316;
-      --pink: #ec4899;
-      --cyan: #22d3ee;
-    }
+<BaseLayout title="Sahil Gupta">
 
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      overflow-x: hidden;
-    }
-
-    /* ---------- Background ---------- */
-
-    .noise {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-      z-index: 1;
-    }
-
-    .gradient {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      background:
-        radial-gradient(800px circle at 20% 10%, rgba(236,72,153,0.15), transparent 40%),
-        radial-gradient(600px circle at 80% 30%, rgba(34,211,238,0.12), transparent 45%),
-        radial-gradient(700px circle at 50% 80%, rgba(249,115,22,0.18), transparent 45%);
-      animation: drift 20s ease-in-out infinite alternate;
-    }
-
-    @keyframes drift {
-      from { transform: translateY(0); }
-      to { transform: translateY(-40px); }
-    }
-
-    /* ---------- Top Quick Nav ---------- */
-
-    .top-nav {
-      position: fixed;
-      top: 24px;
-      right: 32px;
-      z-index: 3;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    .top-nav a {
-      color: var(--muted);
-      text-decoration: none;
-      margin-left: 1.2rem;
-    }
-
-    .top-nav a:hover {
-      color: var(--text);
-    }
-
-    /* ---------- Layout ---------- */
-
-    main {
-      position: relative;
-      z-index: 2;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 100px 32px 120px;
-    }
-
-    /* ---------- Hero ---------- */
-
-    .hero h1 {
-      font-size: clamp(3rem, 8vw, 6rem);
-      line-height: 1;
-      letter-spacing: -0.04em;
-      margin-bottom: 1.5rem;
-      background: linear-gradient(90deg, var(--text), var(--orange), var(--pink));
-      background-size: 200%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: titleShift 8s linear infinite;
-    }
-
-    @keyframes titleShift {
-      from { background-position: 0%; }
-      to { background-position: 200%; }
-    }
-
-    .tagline {
-      max-width: 520px;
-      font-size: 1.15rem;
-      color: var(--muted);
-      margin-bottom: 4rem;
-    }
-
-    /* ---------- Ticker ---------- */
-
-    .ticker {
-      overflow: hidden;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      margin-bottom: 4rem;
-      padding: 1rem 0;
-      white-space: nowrap;
-    }
-
-    .ticker span {
-      display: inline-block;
-      padding-left: 100%;
-      animation: ticker 45s linear infinite;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .ticker:hover span {
-      animation-play-state: paused;
-    }
-
-    @keyframes ticker {
-      from { transform: translateX(0); }
-      to { transform: translateX(-100%); }
-    }
-
-    /* ---------- Grid ---------- */
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 2.5rem;
-      margin-bottom: 6rem;
-    }
-
-    .card {
-      position: relative;
-      padding: 2rem 2rem 2.5rem;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.02);
-      backdrop-filter: blur(6px);
-      text-decoration: none;
-      color: var(--text);
-      transition: transform 0.3s ease, border-color 0.3s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      border-color: var(--orange);
-    }
-
-    .card h2 {
-      font-size: 1.4rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .card p {
-      color: var(--muted);
-      font-size: 0.95rem;
-      line-height: 1.6;
-    }
-
-    /* ---------- Footer ---------- */
-
-    footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-
-    .socials a {
-      color: var(--muted);
-      text-decoration: none;
-      margin-left: 1.2rem;
-    }
-
-    .socials a:hover {
-      color: var(--text);
-    }
-
-    /* ---------- Responsive ---------- */
-
-    @media (max-width: 700px) {
-      main {
-        padding-top: 80px;
-      }
-
-      .hero h1 {
-        margin-bottom: 1rem;
-      }
-
-      .tagline {
-        margin-bottom: 3rem;
-      }
-
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .top-nav {
-        right: 16px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation: none !important;
-        transition: none !important;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="gradient"></div>
-  <div class="noise"></div>
-
-  <!-- Top quick redirects -->
-  <div class="top-nav">
-    <a href="/writing">Writing</a>
-    <a href="/notes">Notes</a>
-    <a href="/now">Now</a>
-  </div>
+  <TopNav />
 
   <main>
+
     <section class="hero">
       <h1>Sahil Gupta</h1>
       <p class="tagline">
@@ -247,7 +19,6 @@
       </p>
     </section>
 
-    <!-- Ticker -->
     <div class="ticker">
       <span>
         Currently thinking about systems design · building sahilgupta.me ·
@@ -278,17 +49,85 @@
       </a>
     </section>
 
-    <footer>
-      <span>Built slowly. Updated often.</span>
+    <Footer />
 
-      <span class="socials">
-        <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">Twitter</a>
-        <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a href="mailto:you@example.com">Email</a>
-      </span>
-    </footer>
   </main>
 
-</body>
-</html>
+</BaseLayout>
+
+<style>
+.hero h1 {
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(90deg, var(--text), var(--orange), var(--pink));
+  background-size: 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: titleShift 8s linear infinite;
+}
+
+@keyframes titleShift {
+  from { background-position: 0%; }
+  to { background-position: 200%; }
+}
+
+.tagline {
+  max-width: 520px;
+  font-size: 1.15rem;
+  color: var(--muted);
+  margin-bottom: 4rem;
+}
+
+.ticker {
+  overflow: hidden;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 4rem;
+  padding: 1rem 0;
+  white-space: nowrap;
+}
+
+.ticker span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: ticker 45s linear infinite;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.ticker:hover span {
+  animation-play-state: paused;
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.5rem;
+  margin-bottom: 6rem;
+}
+
+.card {
+  padding: 2rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+  text-decoration: none;
+  color: var(--text);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: var(--orange);
+}
+
+@media (max-width: 700px) {
+  .grid { grid-template-columns: 1fr; }
+}
+</style>
