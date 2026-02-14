@@ -1,0 +1,256 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TopNav from "../../components/TopNav.astro";
+import Footer from "../../components/Footer.astro";
+
+import { getCollection, type CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("writing");
+
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+type Props = {
+  post: CollectionEntry<"writing">;
+};
+
+const { post } = Astro.props as Props;
+
+const { Content } = await post.render();
+
+/* ---------- Reading time ---------- */
+
+const plainText = post.body.replace(/<[^>]+>/g, "");
+const wordsPerMinute = 200;
+const wordCount = plainText.split(/\s+/).length;
+const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
+---
+
+<BaseLayout title={post.data.title}>
+
+  <TopNav />
+
+  <main class="article">
+
+    <header class="article-header">
+
+      <h1>{post.data.title}</h1>
+
+      <div class="meta">
+        <span>
+          {post.data.date.toLocaleDateString("en-IN", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })}
+        </span>
+
+        <span>• {readingTime} min read</span>
+      </div>
+
+      <div class="tags">
+        {post.data.tags.map((tag) => (
+          <span class="tag">{tag}</span>
+        ))}
+      </div>
+
+      {post.data.cover && (
+        <div class="cover-wrapper">
+          <img src={post.data.cover} alt={post.data.title} />
+        </div>
+      )}
+
+    </header>
+
+    <article class="content">
+      <Content />
+    </article>
+
+    <div class="newsletter">
+      <p>Subscribe for new essays.</p>
+    </div>
+
+    <p class="comment-note">
+        Comments are moderated to keep the discussion thoughtful.
+    </p>
+
+    <!-- 💬 Comments -->
+
+    <section class="comments">
+
+  <div id="cusdis_thread"
+       data-host="https://cusdis.com"
+       data-app-id="80731452-35fd-47c2-aa84-b6d29ab930d3"
+       data-page-id={Astro.url.pathname}
+       data-page-url={Astro.url.href}
+       data-page-title={post.data.title}
+       data-theme="dark">
+  </div>
+
+  <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+
+</section>
+
+    <Footer />
+
+  </main>
+
+</BaseLayout>
+
+<style>
+.article {
+  max-width: 760px;
+}
+
+/* ---------- Header ---------- */
+
+.article-header {
+  margin-bottom: 3rem;
+}
+
+.article-header h1 {
+  font-size: clamp(2.4rem, 5vw, 3.2rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+/* ---------- Meta ---------- */
+
+.meta {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 0.8rem;
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+/* ---------- Tags ---------- */
+
+.tags {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.6rem;
+}
+
+.tag {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* ---------- Cover ---------- */
+
+.cover-wrapper {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 420px;
+  overflow: hidden;
+  border-radius: 16px;
+  margin-top: 1.5rem;
+}
+
+.cover-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.comment-note {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+/* Cusdis container */
+#cusdis_thread {
+  background: transparent !important;
+}
+
+/* Main embedded app */
+#cusdis_thread iframe {
+  background: transparent !important;
+}
+
+/* Remove card background inside */
+.cusdis {
+  background: transparent !important;
+}
+
+#cusdis_thread {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ---------- Content typography ---------- */
+
+.content {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: #e5e7eb;
+}
+
+.content p {
+  margin: 1.4rem 0;
+}
+
+.content h2 {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+}
+
+.content h3 {
+  margin-top: 2.2rem;
+  margin-bottom: 0.6rem;
+}
+
+.content a {
+  color: var(--orange);
+  text-decoration: none;
+}
+
+.content a:hover {
+  text-decoration: underline;
+}
+
+.content ul {
+  margin: 1.2rem 0 1.2rem 1.4rem;
+}
+
+.content img {
+  width: 100%;
+  border-radius: 12px;
+  margin: 2rem 0;
+}
+
+/* ---------- Newsletter ---------- */
+
+.newsletter {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  color: var(--muted);
+}
+
+/* ---------- Comments ---------- */
+
+.comments {
+  margin-top: 4rem;
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 700px) {
+  .article-header h1 {
+    font-size: 2rem;
+  }
+}
+</style>

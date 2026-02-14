@@ -1,0 +1,185 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TopNav from "../../components/TopNav.astro";
+import Footer from "../../components/Footer.astro";
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("writing");
+
+const published = posts
+  .filter(p => !p.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title="Writing — Sahil Gupta">
+
+  <TopNav />
+
+  <main>
+
+    <h1 class="page-title">Writing</h1>
+
+    {published.length === 0 ? (
+
+      <p class="empty">
+        Long-form essays on product, systems, calm software, and things I’m thinking about.
+      </p>
+
+    ) : (
+
+      <div class="post-list">
+
+        {published.map(post => (
+
+          <a href={`/writing/${post.slug}/`} class="post-card">
+
+            {post.data.cover && (
+              <div class="cover-wrapper">
+                <img src={post.data.cover} alt={post.data.title} />
+              </div>
+            )}
+
+            <div class="post-content">
+
+              <div class="meta">
+
+                <span>
+                  {post.data.date.toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </span>
+
+                {post.data.tags.map(tag => (
+                  <span class="tag">{tag}</span>
+                ))}
+
+              </div>
+
+              <h2>{post.data.title}</h2>
+
+              <p>{post.data.description}</p>
+
+            </div>
+
+          </a>
+
+        ))}
+
+      </div>
+
+    )}
+
+    <Footer />
+
+  </main>
+
+</BaseLayout>
+
+<style>
+.page-title {
+  font-size: 2.4rem;
+  margin-bottom: 3rem;
+  letter-spacing: -0.02em;
+}
+
+.empty {
+  max-width: 520px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+/* ---------- Post list ---------- */
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+/* ---------- Card ---------- */
+
+.post-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding-bottom: 2.5rem;
+  transition: transform 0.3s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+}
+
+/* ---------- Cover image ---------- */
+
+.cover {
+  width: 100%;
+  border-radius: 14px;
+  margin-bottom: 1.3rem;
+}
+
+/* ---------- Meta ---------- */
+
+.meta {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  opacity: 0.7;
+}
+
+/* ---------- Text ---------- */
+
+.post-card h2 {
+  margin: 0 0 0.45rem 0;
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+}
+
+.post-card:hover h2 {
+  color: var(--orange);
+}
+
+.post-card p {
+  margin: 0;
+  color: var(--muted);
+  max-width: 640px;
+  line-height: 1.7;
+}
+
+.cover-wrapper {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 260px;
+  overflow: hidden;
+  border-radius: 14px;
+  margin-bottom: 1rem;
+}
+
+.cover-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 700px) {
+  .page-title {
+    font-size: 2rem;
+  }
+
+  .post-card h2 {
+    font-size: 1.35rem;
+  }
+}
+</style>
